@@ -15,6 +15,7 @@ CREATE TABLE perros (
    )
   ;
 		 												/*-----CREACION LLAVE FORANEAS----*/
+														
  ALTER TABLE perros ADD CONSTRAINT FK1_paseador FOREIGN KEY (ID_PASEADOR)
         REFERENCES paseador (ID_PASEADOR);
 ALTER TABLE perros ADD CONSTRAINT FK1_coach FOREIGN KEY (ID_COACH)
@@ -56,7 +57,18 @@ CREATE TABLE coach  (
         )
 	;
 
-  												/*-----INSERT CLIENTES----*/
+  												/*-----INSERT ----*/
+insert into perros (ID_PERRO,NOMBRE_PERRO,EDAD_PERRO,SEXO_PERRO,CASTRADO,RAZA,ID_CLIENTE,ID_COACH,ID_PASEADOR)
+	values 
+	(10,'Mecha',2,'F',1,'Border Collie',1,6,1),
+	(11,'Lima',1,'F',1,'Mestizo',2,1,1),
+	(12,'Gemma',3,'F',0,'Mestizo',3,2,3),
+	(13,'Jack',4,'M',1,'Chow Chow',4,6,4),
+	(14,'Kurt',1,'M',1,'Boston Terrier',5,3,4),
+	(15,'Choco',1,'M',1,'Boxer',3,4,5),
+	(16,'Aguacate',3,'M',1,'Bull Terrier',6,7,7),
+	(17,'Rita',3,'F',1,'Breton',8,8,8)
+												
 insert into cliente (NOMBRE_CLIENTE,DNI_CLIENTE,DIRECCION_CLIENTE,HORARIOS_CLIENTE,EDAD_CLIENTE)
 	values 
 		('David Guillen','95564213',' ','9','28'),
