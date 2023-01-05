@@ -68,6 +68,7 @@ insert into perros (ID_PERRO,NOMBRE_PERRO,EDAD_PERRO,SEXO_PERRO,CASTRADO,RAZA,ID
 	(15,'Choco',1,'M',1,'Boxer',3,4,5),
 	(16,'Aguacate',3,'M',1,'Bull Terrier',6,7,7),
 	(17,'Rita',3,'F',1,'Breton',8,8,8)
+	;
 												
 insert into cliente (NOMBRE_CLIENTE,DNI_CLIENTE,DIRECCION_CLIENTE,HORARIOS_CLIENTE,EDAD_CLIENTE)
 	values 
