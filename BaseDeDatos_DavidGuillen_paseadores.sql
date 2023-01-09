@@ -190,6 +190,41 @@ BEGIN
   RETURN id_clientes;
 END
 $$ ;
+-- 2) horario clientes
+DELIMITER $$
+CREATE FUNCTION horario_clientes (id_funcion_clientes INT)
+RETURNS VARCHAR(100)
+DETERMINISTIC
+BEGIN
+	DECLARE id_clientes VARCHAR(100);
+		select HORARIOS_CLIENTE into id_clientes from cliente
+		where ID_CLIENTE= id_funcion_clientes;
+  RETURN id_clientes;
+END
+$$ ;
+
+/* 
+INTENTÉ CREAR UNA FUNCION QUE ME TRAIGA EL HORARIO DEL CLIENTE,NOMBRE Y LOS PERROS QUE POSEE PERO ESTA ME MARCA ERROR.
+								DELIMITER %%
+								CREATE FUNCTION Horario_x_cliente (ID_FUNCION_CLIENTE INT) RETURNS VARCHAR (50)
+								DETERMINISTIC 
+								BEGIN
+									DECLARE FUNCION_1 VARCHAR(50);
+									DECLARE FUNCION_2 VACHAR(50);
+									select
+										C.ID_CLIENTE INTO FUNCION_1,
+										C.NOMBRE_CLIENTE INTO FUNCION_1,
+										C.HORARIOS_CLIENTE,
+										P.ID_PERRO,
+										P.NOMBRE_PERRO
+									from perros P
+									left join cliente C
+									on c.ID_CLIENTE=P.ID_PERRO
+									WHERE C.ID_CLIENTE=ID_FUNCION_CLIENTE;
+									RETURN FUNCION_1;
+								END
+								%% ;
+*/
 
 
 
