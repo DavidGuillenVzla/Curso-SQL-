@@ -203,37 +203,9 @@ BEGIN
 END
 $$ ;
 
-/* 
-INTENTÉ CREAR UNA FUNCION QUE ME TRAIGA EL HORARIO DEL CLIENTE,NOMBRE Y LOS PERROS QUE POSEE PERO ESTA ME MARCA ERROR.
-								DELIMITER %%
-								CREATE FUNCTION Horario_x_cliente (ID_FUNCION_CLIENTE INT) RETURNS VARCHAR (50)
-								DETERMINISTIC 
-								BEGIN
-									DECLARE FUNCION_1 VARCHAR(50);
-									DECLARE FUNCION_2 VACHAR(50);
-									select
-										C.ID_CLIENTE INTO FUNCION_1,
-										C.NOMBRE_CLIENTE INTO FUNCION_1,
-										C.HORARIOS_CLIENTE,
-										P.ID_PERRO,
-										P.NOMBRE_PERRO
-									from perros P
-									left join cliente C
-									on c.ID_CLIENTE=P.ID_PERRO
-									WHERE C.ID_CLIENTE=ID_FUNCION_CLIENTE;
-									RETURN FUNCION_1;
-								END
-								%% ;
-*/
 
 
-
-
-
-
-
-
-												/*-----CREACION DE FUNCIONES----*/
+												/*-----CREACION DE STORE PROCEDURE----*/
 DELIMITER $$
 CREATE PROCEDURE sp_obtener_nombres_perros (in id_perros_procedure INT)
 BEGIN
@@ -242,32 +214,21 @@ BEGIN
 	END
 $$ ;
 
-CALL sp_obtener_nombres_perros(10);
+CALL sp_obtener_nombres_perros(3);
 select * from perros
 
-											/*  Store procedure con condicionales    */
-DELIMITER $$
-CREATE PROCEDURE sp_query_condicion (IN condicion INT)
+-- 2) SP PARA CANTIDAD DE PERROS EN LA APP
+
+DELIMITER %%
+CREATE PROCEDURE cantidad_perros_registrados (OUT total_perros INT)
 BEGIN
-	IF condicion= 1 THEN
-		SELECT * FROM cliente;
-	ELSE
-		SELECT * FROM perros;
-        END IF;
+	SELECT COUNT(*)
+		INTO total_perros
+        FROM perros;
 END
-$$ ;
+%%;
+/*
+CALL sp_cantidad_perros_registrados(@total_perros); 
+select @total_perros /*
 
-
-CALL sp_query_condicion(1)
-
-
-DELIMITER $$
-CREATE PROCEDURE sp_get_names_order (IN field CHAR(20) )
-BEGIN
-	DECLARE game_order VARCHAR(100) ; -- ORDER BY name
-	IF field <> '' THEN
-		SET game_order = CONCAT(' ORDER BY ', field);
-  END IF;
-  SELECT game_order;
-END
-$$ ;
+											
