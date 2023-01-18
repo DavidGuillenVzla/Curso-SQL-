@@ -232,3 +232,13 @@ CALL sp_cantidad_perros_registrados(@total_perros);
 select @total_perros /*
 
 											
+								/* creacion de usuarios */
+-- 1) CREACION USUARIO 1
+CREATE USER 'David_1' identified by '123';
+-- 2) CREACION USUARIO 2
+CREATE USER 'David_2' identified by '123';
+
+-- 3) PERMISOS DE LECTURA USUARIO 1
+GRANT SELECT on  paseos_app.* TO 'David_1';
+-- 4) PERMISO DE LECTURA,INSERCION Y MODIFICACION USUARIO 2
+GRANT SELECT,INSERT,UPDATE on  paseos_app.* to 'David_2'
