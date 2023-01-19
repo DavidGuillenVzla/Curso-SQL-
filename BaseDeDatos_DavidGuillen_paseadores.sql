@@ -226,11 +226,10 @@ BEGIN
 		INTO total_perros
         FROM perros;
 END
-%%;
+%% ;
 /*
 CALL sp_cantidad_perros_registrados(@total_perros); 
 select @total_perros /*
-
 											
 								/* creacion de usuarios */
 -- 1) CREACION USUARIO 1
@@ -242,3 +241,27 @@ CREATE USER 'David_2' identified by '123';
 GRANT SELECT on  paseos_app.* TO 'David_1';
 -- 4) PERMISO DE LECTURA,INSERCION Y MODIFICACION USUARIO 2
 GRANT SELECT,INSERT,UPDATE on  paseos_app.* to 'David_2'
+
+
+												/*  Transaciones   (TCL) */
+
+START TRANSACTION;
+	DELETE FROM cliente WHERE ID_CLIENTE =(6,7);
+    -- ROLLBACK 
+    -- COMMIT
+
+START TRANSACTION;
+	 INSERT INTO paseador VALUES ('11','Pepito Perez','95123453','Escobar 34234','10','21');
+	 INSERT INTO paseador VALUES ('12','Juan Ramirez','95123433','Martinez 8234','9','22');
+     INSERT INTO paseador VALUES ('13','Maria Paz','95123423','Irala 1274','9','24');
+	 INSERT INTO paseador VALUES ('14','Carmen Perez','95123453','Segurola 1254','9','31');
+        SAVEPOINT insercion_1;
+	 INSERT INTO paseador VALUES ('15','Fulanito Martinez','94123453','Callao 1134','9','31');
+	 INSERT INTO paseador VALUES ('16','Benito Martinez','94143453','Santa Fe 1434','9','32');
+	 INSERT INTO paseador VALUES ('17','Juan Cruz','96123452','Cordoba 24335','9','22');
+	 INSERT INTO paseador VALUES ('18','Juan Bertolini','95122453','Talcahuano 6237','9','19');
+	     SAVEPOINT insercion_2;
+			
+        -- RELEASE SAVEPOINT checkpoint_1;
+     
+		
