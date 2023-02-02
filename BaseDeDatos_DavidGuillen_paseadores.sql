@@ -46,7 +46,23 @@ CREATE TABLE perros (
 	ID_PASEADOR INT  NULL
 )
 ;	
- 											
+									              /*----- CREACION TABLA NUEVOS CLIENTES ----*/
+CREATE TABLE nuevos_clientes (
+	ID_CLIENTE INT AUTO_INCREMENT PRIMARY KEY ,
+	NOMBRE_CLIENTE VARCHAR (40),
+	DNI_CLIENTE INT,
+    FECHA_INGRESO TIMESTAMP,
+    ADMINISTRADOR VARCHAR(50)
+);
+ 										              /*----- CREACION TABLA NUEVOS PASEADORES ----*/						
+CREATE TABLE nuevos_paseadores (
+	ID_PASEADOR INT AUTO_INCREMENT PRIMARY KEY ,
+    NOMBRE_PASEADOR VARCHAR (50),
+    DNI_PASEADOR INT,
+    EDAD_PASEADOR INT,
+    FECHA_INGRESO TIMESTAMP,
+    ADMINISTRADOR VARCHAR (50)
+);
 
 		 												/*-----CREACION LLAVE FORANEAS----*/
 														
@@ -202,8 +218,44 @@ BEGIN
   RETURN id_clientes;
 END
 $$ ;
+												/*-----CREACION DE TRIGGERS----*/
+                                                
+										/*--------------------------------*/
+										/* 			SU FUNCION:            */
+										/*Registrar los nuevos clientes que*/
+										/*ingresen en la app.              */
+										/*-------------------------------- */											
 
+DELIMITER %%
+CREATE TRIGGER tr_nuevos_clientes
+AFTER INSERT ON cliente
+for each row
+BEGIN
+	INSERT nuevos_clientes (ID_CLIENTE,NOMBRE_CLIENTE,DNI_CLIENTE,FECHA_INGRESO,ADMINISTRADOR)
+		VALUES 	(
+			NEW.ID_CLIENTE, NEW.NOMBRE_CLIENTE,NEW.DNI_CLIENTE,current_timestamp(),user()
+        );
 
+END
+%%                                      
+										/*-----------------------------------*/
+										/* 			SU FUNCION:              */
+										/*Registrar los nuevos paseadores que*/
+										/*ingresen en la app.                */
+										/*---------------------------------- */
+DELIMITER %%
+CREATE TRIGGER tr_before_nuevos_paseadores
+BEFORE INSERT ON paseador
+FOR EACH ROW
+BEGIN
+	INSERT INTO  nuevos_paseadores (NOMBRE_PASEADOR,DNI_PASEADOR,EDAD_PASEADOR,FECHA_INGRESO,ADMINISTRADOR)
+		VALUES (
+			NEW.NOMBRE_PASEADOR,NEW.DNI_PASEADOR,NEW.EDAD_PASEADOR,current_timestamp(),USER()
+        );
+END
+%%
+;
+           
 
 												/*-----CREACION DE STORE PROCEDURE----*/
 DELIMITER $$
@@ -226,24 +278,8 @@ BEGIN
 		INTO total_perros
         FROM perros;
 END
-%% ;
-/*
-CALL sp_cantidad_perros_registrados(@total_perros); 
-select @total_perros /*
-											
-								/* creacion de usuarios */
--- 1) CREACION USUARIO 1
-CREATE USER 'David_1' identified by '123';
--- 2) CREACION USUARIO 2
-CREATE USER 'David_2' identified by '123';
-
--- 3) PERMISOS DE LECTURA USUARIO 1
-GRANT SELECT on  paseos_app.* TO 'David_1';
--- 4) PERMISO DE LECTURA,INSERCION Y MODIFICACION USUARIO 2
-GRANT SELECT,INSERT,UPDATE on  paseos_app.* to 'David_2'
-
-
-												/*  Transaciones   (TCL) */
+%% 
+;
 
 START TRANSACTION;
 	DELETE FROM cliente WHERE ID_CLIENTE =(6,7);
@@ -263,5 +299,16 @@ START TRANSACTION;
 	     SAVEPOINT insercion_2;
 			
         -- RELEASE SAVEPOINT checkpoint_1;
+
+
+CREATE USER 'David_1' identified by '123';
+CREATE USER 'David_2' identified by '123';
+GRANT SELECT on  paseos_app.* TO 'David_1';
+GRANT SELECT,INSERT,UPDATE on  paseos_app.* to 'David_2'
+
+        
+
+
+
      
 		
