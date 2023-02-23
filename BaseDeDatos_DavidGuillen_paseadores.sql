@@ -70,9 +70,11 @@ CREATE TABLE nuevos_paseadores (
         REFERENCES paseador (ID_PASEADOR);
 ALTER TABLE perros ADD CONSTRAINT FK1_coach FOREIGN KEY (ID_COACH)
         REFERENCES coach (ID_COACH);
+SET FOREIGN_KEY_CHECKS=0;
 ALTER TABLE perros ADD CONSTRAINT FK1_cliente FOREIGN KEY (ID_CLIENTE)
-        REFERENCES cliente (ID_CLIENTE);
-        
+	REFERENCES cliente(ID_CLIENTE) ON DELETE CASCADE;
+    
+    SET FOREIGN_KEY_CHECKS=1;
      
 									
 										
@@ -281,10 +283,7 @@ END
 %% 
 ;
 
-START TRANSACTION;
-	DELETE FROM cliente WHERE ID_CLIENTE =(6,7);
-    -- ROLLBACK 
-    -- COMMIT
+/**
 
 START TRANSACTION;
 	 INSERT INTO paseador VALUES ('11','Pepito Perez','95123453','Escobar 34234','10','21');
@@ -299,14 +298,19 @@ START TRANSACTION;
 	     SAVEPOINT insercion_2;
 			
         -- RELEASE SAVEPOINT checkpoint_1;
-
+        
+START TRANSACTION;
+	DELETE FROM cliente WHERE ID_CLIENTE IN ('6','7');
+    -- ROLLBACK 
+    -- COMMIT
 
 CREATE USER 'David_1' identified by '123';
 CREATE USER 'David_2' identified by '123';
 GRANT SELECT on  paseos_app.* TO 'David_1';
 GRANT SELECT,INSERT,UPDATE on  paseos_app.* to 'David_2'
 
-        
+        **/
+     
 
 
 
